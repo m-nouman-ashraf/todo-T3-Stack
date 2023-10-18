@@ -1,11 +1,5 @@
-import Head from "next/head";
-import Link from "next/link";
-
-import { api } from "~/utils/api";
 import Navbar from "~/components/Navbar";
 export default function Home() {
-  // const hello = api.post.hello.useQuery({ text: "from tRPC" });
-
   return (
     <main>
       <Navbar />
@@ -15,13 +9,6 @@ export default function Home() {
             Welcome
           </p>
         </div>
-        {/* <h1 className="head_text text-center">
-          Welcome
-          <br className="max-md:hidden" />
-          <span className="blue_gradient text-center">To The ToDo list</span>
-        </h1> */}
-
-        {/* <Feed /> */}
       </section>
     </main>
   );
