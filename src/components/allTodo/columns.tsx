@@ -2,7 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "~/components/ui/badge";
-
+import { EditTodo } from "../editTodo/EditTdo";
+import { DeleteTodo } from "../deleteTodo/DeleteTodo";
+import React from "react";
 export type Todo = {
   id: number;
   title: string;
@@ -47,5 +49,14 @@ export const columns: ColumnDef<Todo>[] = [
   {
     accessorKey: "action",
     header: "Action",
+    cell: ({ row }) => {
+      console.log("row", row.original.id);
+      return (
+        <div className="flex w-full items-end justify-end gap-4">
+          <EditTodo id={row.original.id} />
+          <DeleteTodo id={row.original.id} />
+        </div>
+      );
+    },
   },
 ];

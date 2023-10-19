@@ -1,5 +1,12 @@
+import { useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 import Navbar from "~/components/Navbar";
 export default function Home() {
+  const { isSignedIn } = useUser();
+
+  // if (isSignedIn) {
+  //   redirect("/dashboard");
+  // }
   return (
     <main>
       <Navbar />
