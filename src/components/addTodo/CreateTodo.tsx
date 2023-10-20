@@ -72,7 +72,7 @@ const CreateTodo = () => {
             <FormItem>
               <FormControl>
                 <Input
-                  className="flex w-full "
+                  className="flex w-full lg:w-80"
                   placeholder="Title"
                   {...field}
                 />
@@ -87,7 +87,11 @@ const CreateTodo = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="description" {...field} />
+                <Input
+                  className="flex w-full lg:w-80"
+                  placeholder="description"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +108,7 @@ const CreateTodo = () => {
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-ful pl-3 text-left font-normal md:w-[200px]",
+                        "w-ful pl-3 text-left font-normal md:w-[200px] lg:w-80",
                         !field.value && "text-muted-foreground",
                       )}
                     >

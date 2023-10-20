@@ -151,8 +151,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="mt-20 flex  sm:flex-col  md:items-center ">
-      <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl md:w-[700px] ">
+    <div className="mt-20 flex sm:flex-col md:items-center  lg:mx-20 ">
+      <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl md:w-[700px] lg:w-full">
         <CardHeader className="flex w-full flex-row  justify-center">
           <CardTitle className=" text-center text-3xl font-extrabold">
             Todo List
