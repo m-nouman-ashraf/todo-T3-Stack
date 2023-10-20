@@ -26,13 +26,14 @@ import { useEffect, useState } from "react";
 
 interface Props {
   id: number;
+  status: boolean;
 }
 const formSchema = z.object({
   title: z.string().min(2).max(50),
   description: z.string().optional(),
   dueDate: z.date(),
 });
-export function EditTodo({ id }: Props) {
+export function EditTodo({ id, status }: Props) {
   console.log("id", id);
   const [enabled, setEnabled] = useState(false);
   const { data } = api.todo.getTodoById.useQuery(
@@ -85,7 +86,9 @@ export function EditTodo({ id }: Props) {
         }}
         asChild
       >
-        <Button variant="default">Edit Todo</Button>
+        <Button disabled={status} variant="default">
+          Edit Todo
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -2,21 +2,30 @@
 import { Input } from "~/components/ui/input";
 import { useUser } from "@clerk/nextjs";
 import * as z from "zod";
+import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
 import React from "react";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
+import { cn } from "~/lib/utils";
+import { Calendar } from "../ui/calendar";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -31,7 +40,7 @@ const CreateTodo = () => {
     defaultValues: {
       title: "",
       description: "",
-      dueDate: new Date(),
+      //   dueDate: new Date(),
     },
   });
   const ctx = api.useContext();
@@ -87,16 +96,40 @@ const CreateTodo = () => {
         <FormField
           control={form.control}
           name="dueDate"
-          render={() => (
-            <FormItem>
-              <FormControl>
-                <Input type="date" placeholder="Select a date" />
-              </FormControl>
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <div className="space-y-2">
           <Button
             disabled={isLoading}

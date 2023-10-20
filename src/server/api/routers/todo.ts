@@ -44,9 +44,48 @@ export const toDoRouter = createTRPCRouter({
         },
       });
     }),
-  getAllTodos: publicProcedure.query(({ ctx }) => {
-    return ctx.db.todo.findMany();
-  }),
+
+  updateTodoStatus: publicProcedure
+    .input(
+      z.object({
+        status: z.boolean(),
+        id: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.todo.update({
+        where: { id: input.id },
+        data: {
+          status: input.status,
+        },
+      });
+    }),
+  getAllTodos: publicProcedure
+    .input(
+      z.object({
+        startDate: z.date().optional(),
+        endDate: z.date().optional(),
+        title: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      let where = {};
+      if (input.startDate && input.endDate) {
+        where = {
+          AND: [
+            { dueDate: { gte: input.startDate } },
+            { dueDate: { lte: input.endDate } },
+            { title: { contains: input.title, mode: "insensitive" } },
+          ],
+        };
+      }
+
+      const todos = await ctx.db.todo.findMany({
+        where,
+      });
+
+      return todos;
+    }),
   getTodoById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
@@ -79,7 +118,11 @@ export const toDoRouter = createTRPCRouter({
 
       return todo;
     }),
-  deleteAllTodos: publicProcedure.query(({ ctx }) => {
-    return ctx.db.todo.deleteMany();
+  deleteAllTodos: publicProcedure.mutation(async ({ ctx }) => {
+    // Delete all todos from the database
+    await ctx.db.todo.deleteMany({});
+
+    // Return a success message or any other relevant response
+    return { message: "All todos deleted successfully." };
   }),
 });

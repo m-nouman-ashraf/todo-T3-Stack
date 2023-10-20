@@ -13,35 +13,30 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
-interface props {
-  id: number;
-}
-export function DeleteTodo({ id }: props) {
-  console.log("id >>>", id);
-  const deleteTaskMutation = api.todo.deleteTodoById.useMutation();
+
+export function DeleteALLTodo() {
   const ctx = api.useContext();
-  const handleDeleteTask = () => {
-    deleteTaskMutation.mutate(
-      { id: id },
-      {
-        onSuccess: () => {
-          toast.success("Task Deleted Sucessfully");
-          void ctx.invalidate();
-        },
-        onError: () => {
-          toast.error("Something went wrong");
-        },
-      },
-    );
+  const { mutate, isLoading } = api.todo.deleteAllTodos.useMutation({
+    onSuccess: () => {
+      toast.success("All todos deleted successfully.");
+      void ctx.invalidate();
+    },
+    onError: () => {
+      toast.error("Something went wrong while deleting todos.");
+    },
+  });
+  const handleDeleteAllTodos = () => {
+    // Call the API endpoint to delete all todos
+    mutate();
   };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button disabled={deleteTaskMutation.isLoading} variant="outline">
-          {deleteTaskMutation.isLoading ? (
+        <Button variant={"default"} className="w-28" disabled={isLoading}>
+          {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
-            "Delete"
+            "Delete All"
           )}
         </Button>
       </AlertDialogTrigger>
@@ -57,11 +52,11 @@ export function DeleteTodo({ id }: props) {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
-              disabled={deleteTaskMutation.isLoading}
+              disabled={isLoading}
               type="submit"
-              onClick={handleDeleteTask}
+              onClick={handleDeleteAllTodos}
             >
-              {deleteTaskMutation.isLoading ? (
+              {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
                 "Continue"
