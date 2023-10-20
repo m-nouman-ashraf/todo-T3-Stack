@@ -32,7 +32,7 @@ export function DeleteALLTodo() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"default"} className="w-28" disabled={isLoading}>
+        <Button variant={"default"} disabled={isLoading}>
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

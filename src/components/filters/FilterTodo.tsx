@@ -29,7 +29,7 @@ export function DropdownMenuDemo({ onFilterSelect }: DropdownMenuDemoProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="w-44" variant="outline">
+        <Button className="w-full md:w-44" variant="outline">
           Filter
         </Button>
       </DropdownMenuTrigger>

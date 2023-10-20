@@ -21,8 +21,12 @@ import {
 } from "~/components/ui/form";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Calendar } from "../ui/calendar";
+import { format } from "date-fns";
+import { cn } from "~/lib/utils";
 
 interface Props {
   id: number;
@@ -86,7 +90,7 @@ export function EditTodo({ id, status }: Props) {
         }}
         asChild
       >
-        <Button disabled={status} variant="default">
+        <Button className="w-24" disabled={status} variant="default">
           Edit Todo
         </Button>
       </DialogTrigger>
@@ -128,7 +132,7 @@ export function EditTodo({ id, status }: Props) {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="dueDate"
               render={() => (
@@ -136,6 +140,43 @@ export function EditTodo({ id, status }: Props) {
                   <FormControl>
                     <Input type="date" placeholder="Select a date" />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="dueDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-ful pl-3 text-left font-normal md:w-full",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}

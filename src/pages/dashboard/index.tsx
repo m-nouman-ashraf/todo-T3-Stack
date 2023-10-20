@@ -128,7 +128,7 @@ const Dashboard = () => {
       case "Search By Name":
         return (
           <Input
-            className="w-44"
+            className="w-full md:w-44"
             type="text"
             placeholder="Enter name..."
             onChange={(e) => handleSearchText(e.target.value)}
@@ -151,8 +151,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container mt-20 flex items-center justify-center ">
-      <Card className="flex w-[600px] grow flex-col bg-white box-decoration-clone shadow-2xl">
+    <div className="mt-20 flex  sm:flex-col  md:items-center ">
+      <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl md:w-[700px] ">
         <CardHeader className="flex w-full flex-row  justify-center">
           <CardTitle className=" text-center text-3xl font-extrabold">
             Todo List
@@ -160,11 +160,11 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent className="flex grow flex-col gap-6">
           <CreateTodo />
-          <div className="flex w-full justify-between gap-4">
+          <div className="flex w-full flex-col justify-between gap-4 md:flex-row">
             <DropdownMenuDemo onFilterSelect={setFilterType} />
             {filterType !== null && renderFilterComponent()}
             {filterType !== null && (
-              <Button className="w-44" onClick={resetFilter}>
+              <Button className="w-full md:w-44" onClick={resetFilter}>
                 Reset Filter
               </Button>
             )}

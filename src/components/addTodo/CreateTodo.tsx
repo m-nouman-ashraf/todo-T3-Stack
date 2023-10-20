@@ -63,7 +63,7 @@ const CreateTodo = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full items-end justify-between gap-2"
+        className="flex w-full flex-col justify-between gap-2 md:flex-row md:items-end"
       >
         <FormField
           control={form.control}
@@ -104,7 +104,7 @@ const CreateTodo = () => {
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
+                        "w-ful pl-3 text-left font-normal md:w-[200px]",
                         !field.value && "text-muted-foreground",
                       )}
                     >
@@ -133,8 +133,7 @@ const CreateTodo = () => {
         <div className="space-y-2">
           <Button
             disabled={isLoading}
-            size={"lg"}
-            className="w-auto"
+            className="w-full md:w-auto"
             type="submit"
           >
             {isLoading ? (
