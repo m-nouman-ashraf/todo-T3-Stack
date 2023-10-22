@@ -27,7 +27,7 @@ export const LoadingSpiner = (props: { size?: number }) => {
 export const LoadingPage = () => {
   return (
     <div className="absolute right-0 top-0 flex h-screen w-screen items-center justify-center">
-      <LoadingSpiner size={60} />
+      <LoadingSpiner size={200} />
     </div>
   );
 };

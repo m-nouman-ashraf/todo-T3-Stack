@@ -38,6 +38,7 @@ const Dashboard = () => {
     endDate: dateRange?.from,
     startDate: dateRange?.to,
     title: searchTitle ?? "",
+    filterType: filterType ?? "All",
   });
   console.log("data", data);
   const { mutate, isLoading: statusLoading } =
@@ -98,7 +99,6 @@ const Dashboard = () => {
     {
       accessorKey: "action",
       header: "Action",
-      size: 100,
       cell: ({ row }) => {
         const status = row.original.status;
         return (

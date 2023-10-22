@@ -72,6 +72,15 @@ export const toDoRouter = createTRPCRouter({
         startDate: z.date().optional(),
         endDate: z.date().optional(),
         title: z.string().optional(),
+        filterType: z
+          .union([
+            z.literal("Search By Name"),
+            z.literal("Search By Date"),
+            z.literal("All"),
+            z.literal("Completed"),
+            z.literal("Pending"),
+          ])
+          .optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -88,6 +97,11 @@ export const toDoRouter = createTRPCRouter({
         where.title = {
           contains: input.title,
         };
+      }
+      if (input.filterType === "Completed") {
+        where.status = true;
+      } else if (input.filterType === "Pending") {
+        where.status = false;
       }
 
       const todos = await ctx.db.todo.findMany({
