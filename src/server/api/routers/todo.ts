@@ -99,7 +99,6 @@ export const toDoRouter = createTRPCRouter({
   getTodoById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
-      console.log("input", input);
       const singleTodo = await ctx.db.todo.findUnique({
         where: { id: Number(input.id) },
       });

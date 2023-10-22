@@ -17,7 +17,6 @@ interface props {
   id: number;
 }
 export function DeleteTodo({ id }: props) {
-  console.log("id >>>", id);
   const deleteTaskMutation = api.todo.deleteTodoById.useMutation();
   const ctx = api.useContext();
   const handleDeleteTask = () => {

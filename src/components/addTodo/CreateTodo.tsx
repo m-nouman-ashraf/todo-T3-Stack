@@ -34,7 +34,6 @@ const formSchema = z.object({
 });
 const CreateTodo = () => {
   const { user } = useUser();
-  console.log("user", user);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

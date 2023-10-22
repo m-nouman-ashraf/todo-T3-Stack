@@ -38,7 +38,6 @@ const formSchema = z.object({
   dueDate: z.date(),
 });
 export function EditTodo({ id, status }: Props) {
-  console.log("id", id);
   const [enabled, setEnabled] = useState(false);
   const { data } = api.todo.getTodoById.useQuery(
     {

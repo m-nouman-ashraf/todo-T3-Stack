@@ -27,7 +27,7 @@ export type Todo = {
   status: boolean;
   createdAt: Date;
   updatedAt: Date;
-  userId: number;
+  userId: string;
 };
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
@@ -39,6 +39,7 @@ const Dashboard = () => {
     startDate: dateRange?.to,
     title: searchTitle ?? "",
   });
+  console.log("data", data);
   const { mutate, isLoading: statusLoading } =
     api.todo.updateTodoStatus.useMutation({
       onSuccess: () => {
@@ -62,7 +63,6 @@ const Dashboard = () => {
   });
   if (isLoading) return <LoadingPage />;
   const handleSearchText = debounce((e: string) => {
-    console.log("e", e);
     setSearchTitle(e);
   }, 300);
   const columns: ColumnDef<Todo>[] = [
