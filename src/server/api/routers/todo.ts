@@ -1,10 +1,15 @@
+import { type Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  privateProcedure,
+} from "~/server/api/trpc";
 
 export const toDoRouter = createTRPCRouter({
-  create: publicProcedure
+  create: privateProcedure
     .input(
       z.object({
         title: z.string(),
@@ -13,6 +18,7 @@ export const toDoRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const userId = ctx.userId;
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       return ctx.db.todo.create({
@@ -20,7 +26,7 @@ export const toDoRouter = createTRPCRouter({
           title: input.title,
           description: input.description,
           dueDate: input.dueDate,
-          userId: 1,
+          userId: userId,
         },
       });
     }),
@@ -60,7 +66,7 @@ export const toDoRouter = createTRPCRouter({
         },
       });
     }),
-  getAllTodos: publicProcedure
+  getAllTodos: privateProcedure
     .input(
       z.object({
         startDate: z.date().optional(),
@@ -69,19 +75,23 @@ export const toDoRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      let where = {};
+      const where: Prisma.TodoWhereInput = { userId: ctx.userId };
+
       if (input.startDate && input.endDate) {
-        where = {
-          AND: [
-            { dueDate: { gte: input.startDate } },
-            { dueDate: { lte: input.endDate } },
-            { title: { contains: input.title, mode: "insensitive" } },
-          ],
+        where.dueDate = {
+          gte: input.startDate,
+          lte: input.endDate,
+        };
+      }
+
+      if (input.title) {
+        where.title = {
+          contains: input.title,
         };
       }
 
       const todos = await ctx.db.todo.findMany({
-        where,
+        where: where,
       });
 
       return todos;
@@ -119,10 +129,8 @@ export const toDoRouter = createTRPCRouter({
       return todo;
     }),
   deleteAllTodos: publicProcedure.mutation(async ({ ctx }) => {
-    // Delete all todos from the database
     await ctx.db.todo.deleteMany({});
 
-    // Return a success message or any other relevant response
     return { message: "All todos deleted successfully." };
   }),
 });
