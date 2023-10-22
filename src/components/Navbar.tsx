@@ -1,60 +1,125 @@
 "use client";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import { Button } from "../components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
 import Link from "next/link";
+import { useState } from "react";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { Menu, XIcon } from "lucide-react";
+import { Dialog } from "@headlessui/react";
+import DarkMode from "./DarkMode";
 const Navbar = () => {
-  const { setTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isSignedIn } = useUser();
   return (
-    <nav className="container mt-3">
-      <div className="border-gradient flex h-16 w-full flex-row items-center justify-between rounded-full border bg-slate-200 bg-transparent">
-        <div className="mx-10 flex flex-row items-start justify-start">
-          <p className="inline-block bg-gradient-to-r from-[#FF5F6D] to-[#FFC371] bg-clip-text text-6xl text-transparent">
-            ToDo
-          </p>
-        </div>
-        <div className="mx-10 flex flex-row items-end justify-end gap-4">
-          <Button
-            asChild
-            className="w-auto rounded-full bg-gradient-to-r  from-[#FF5F6D] to-[#FFC371] p-4  hover:text-black"
-          >
-            <Link href={"/login"}>Login</Link>
-          </Button>
-          <Button
-            asChild
-            className="w-auto rounded-full bg-gradient-to-r  from-[#FF5F6D] to-[#FFC371] p-4  hover:text-black"
-          >
-            <Link href={"/signup"}>SignUp</Link>
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="rounded-full" asChild>
-              <Button variant="outline" size="icon">
-                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                System
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-    </nav>
+    <>
+      <header className="absolute inset-x-0 top-0 z-50">
+        <nav
+          className="flex items-center justify-between p-6 lg:px-8"
+          aria-label="Global"
+        >
+          <div className="flex lg:flex-1">ToDo</div>
+          <div className="flex lg:hidden">
+            <button
+              type="button"
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <span className="sr-only">Open main menu</span>
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div className="hidden lg:flex lg:gap-x-12">
+            {/* {navigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                {item.name}
+              </a>
+            ))} */}
+          </div>
+          <div className="hidden items-center gap-x-5 lg:flex lg:flex-1 lg:justify-end">
+            {isSignedIn ? (
+              <UserButton userProfileUrl="/profile" />
+            ) : (
+              <>
+                <Button
+                  asChild
+                  variant={"secondary"}
+                  className="w-auto rounded-full   p-4"
+                >
+                  <Link href={"/signup"}>SignUp</Link>
+                </Button>
+                <Button asChild className="w-auto rounded-full   p-4">
+                  <Link href={"/login"}>
+                    Log in <span aria-hidden="true">&rarr;</span>
+                  </Link>
+                </Button>
+              </>
+            )}
+            <DarkMode />
+          </div>
+        </nav>
+        <Dialog
+          as="div"
+          className="lg:hidden"
+          open={mobileMenuOpen}
+          onClose={setMobileMenuOpen}
+        >
+          <div className="fixed inset-0 z-50" />
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div className="flex items-center justify-between">
+              ToDo
+              <button
+                type="button"
+                className="-m-2.5 rounded-md p-2.5 text-gray-700"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="sr-only">Close menu</span>
+                <XIcon className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+            <div className="mt-6 flow-root">
+              <div className="-my-6 divide-y divide-gray-500/10">
+                <div className="space-y-2 py-6">
+                  {/* {navigation.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      {item.name}
+                    </a>
+                  ))} */}
+                </div>
+
+                <div className="flex flex-col gap-8 py-6">
+                  {isSignedIn ? (
+                    <UserButton userProfileUrl="/profile" />
+                  ) : (
+                    <>
+                      <Button
+                        asChild
+                        variant={"secondary"}
+                        className="w-auto rounded-full   p-4"
+                      >
+                        <Link href={"/signup"}>SignUp</Link>
+                      </Button>
+                      <Button asChild className="w-auto rounded-full   p-4">
+                        <Link href={"/login"}>
+                          Log in <span aria-hidden="true">&rarr;</span>
+                        </Link>
+                      </Button>
+                    </>
+                  )}
+                  <DarkMode />
+                </div>
+              </div>
+            </div>
+          </Dialog.Panel>
+        </Dialog>
+      </header>
+    </>
   );
 };
 export default Navbar;

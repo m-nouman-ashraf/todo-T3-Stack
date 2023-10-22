@@ -19,6 +19,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import toast from "react-hot-toast";
 import { DeleteALLTodo } from "~/components/deleteTodo/DeleteAllTodo";
 import { Loader2 } from "lucide-react";
+import DarkMode from "~/components/DarkMode";
+import Navbar from "~/components/Navbar";
 export type Todo = {
   id: number;
   title: string;
@@ -152,6 +154,7 @@ const Dashboard = () => {
 
   return (
     <div className="mt-20 flex sm:flex-col md:items-center  lg:mx-20 ">
+      <Navbar />
       <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl md:w-[700px] lg:w-full">
         <CardHeader className="flex w-full flex-row  justify-center">
           <CardTitle className=" text-center text-3xl font-extrabold">
