@@ -50,7 +50,6 @@ export function EditTodo({ id, status }: Props) {
     defaultValues: {
       title: "",
       description: "",
-      dueDate: new Date(),
     },
   });
 
@@ -73,13 +72,12 @@ export function EditTodo({ id, status }: Props) {
     },
     onError: () => {
       toast.error("Something went wrong");
+      form.reset();
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
     const newValues = { ...values, id: Number(id) };
     mutate(newValues);
-
-    console.log(values);
   }
   return (
     <Dialog>
@@ -131,18 +129,6 @@ export function EditTodo({ id, status }: Props) {
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="dueDate"
-              render={() => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="date" placeholder="Select a date" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="dueDate"

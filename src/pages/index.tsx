@@ -1,17 +1,7 @@
 import Navbar from "~/components/Navbar";
-import { useState } from "react";
-import { Menu, XIcon } from "lucide-react";
-import { Dialog } from "@headlessui/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import { UserButton, useUser } from "@clerk/nextjs";
-
-// const navigation = [
-//   { name: "Product", href: "#" },
-//   { name: "Features", href: "#" },xs
-//   { name: "Marketplace", href: "#" },
-//   { name: "Company", href: "#" },
-// ];
+import { useUser } from "@clerk/nextjs";
 
 export default function Home() {
   const { isSignedIn } = useUser();
@@ -63,7 +53,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        iN
       </div>
     </div>
   );

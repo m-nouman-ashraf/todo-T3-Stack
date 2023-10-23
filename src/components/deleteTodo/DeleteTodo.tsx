@@ -48,8 +48,7 @@ export function DeleteTodo({ id }: props) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your data
-            from our servers.
+            This action cannot be undone. This will permanently delete The Todo.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

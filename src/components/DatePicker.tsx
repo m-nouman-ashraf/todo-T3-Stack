@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange, SelectRangeEventHandler } from "react-day-picker";
 
@@ -65,7 +65,7 @@ export function DatePickerWithRange({
             initialFocus
             mode="range"
             defaultMonth={new Date()}
-            // selected={date}
+            // selected={date ?? new Date()}
             onSelect={handleDateRangeSelect}
             numberOfMonths={2}
           />

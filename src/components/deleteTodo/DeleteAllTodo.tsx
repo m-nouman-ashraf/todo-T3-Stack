@@ -26,7 +26,6 @@ export function DeleteALLTodo() {
     },
   });
   const handleDeleteAllTodos = () => {
-    // Call the API endpoint to delete all todos
     mutate();
   };
   return (
@@ -44,8 +43,8 @@ export function DeleteALLTodo() {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your data
-            from our servers.
+            This action cannot be undone. This will permanently delete All your
+            data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

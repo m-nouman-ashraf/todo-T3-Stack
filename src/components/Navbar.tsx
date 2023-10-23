@@ -11,12 +11,12 @@ const Navbar = () => {
   const { isSignedIn } = useUser();
   return (
     <>
-      <header className="absolute inset-x-0 top-0 z-50">
+      <header className="fixed inset-x-0 top-0 z-50">
         <nav
           className="flex items-center justify-between p-6 lg:px-8"
           aria-label="Global"
         >
-          <div className="flex lg:flex-1">ToDo</div>
+          <div className="flex text-4xl lg:flex-1">ToDo</div>
           <div className="flex lg:hidden">
             <button
               type="button"

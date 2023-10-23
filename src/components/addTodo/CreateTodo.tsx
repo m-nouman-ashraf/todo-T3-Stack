@@ -1,6 +1,5 @@
 "use client";
 import { Input } from "~/components/ui/input";
-import { useUser } from "@clerk/nextjs";
 import * as z from "zod";
 import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,10 +7,8 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import {
@@ -33,13 +30,11 @@ const formSchema = z.object({
   dueDate: z.date(),
 });
 const CreateTodo = () => {
-  const { user } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
-      //   dueDate: new Date(),
     },
   });
   const ctx = api.useContext();
@@ -55,8 +50,6 @@ const CreateTodo = () => {
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
     mutate(values);
-
-    console.log(values);
   }
   return (
     <Form {...form}>

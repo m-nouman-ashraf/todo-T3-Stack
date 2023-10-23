@@ -19,7 +19,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export default function AllTodos<TData, TValue>({
+export default function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {

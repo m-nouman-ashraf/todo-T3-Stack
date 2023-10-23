@@ -1,8 +1,3 @@
-import Link from "next/link";
-import { useState } from "react";
-import { UserButton, useUser } from "@clerk/nextjs";
-import { Menu, XIcon } from "lucide-react";
-import { Dialog } from "@headlessui/react";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -19,7 +19,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import toast from "react-hot-toast";
 import { DeleteALLTodo } from "~/components/deleteTodo/DeleteAllTodo";
 import { Loader2 } from "lucide-react";
-import DarkMode from "~/components/DarkMode";
 import Navbar from "~/components/Navbar";
 export type Todo = {
   id: number;
@@ -42,7 +41,6 @@ const Dashboard = () => {
     title: searchTitle ?? "",
     filterType: filterType ?? "All",
   });
-  console.log("data", data);
   const { mutate, isLoading: statusLoading } =
     api.todo.updateTodoStatus.useMutation({
       onSuccess: () => {
@@ -57,8 +55,6 @@ const Dashboard = () => {
   const changeStatus = (values: number) => {
     const newValues = { status: true, id: Number(values) };
     mutate(newValues);
-
-    console.log(values);
   };
   if (!data) return null;
   const dataKey = data.map((key) => {
@@ -153,30 +149,34 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="mt-20 flex sm:flex-col md:items-center  lg:mx-20 ">
-      <Navbar />
-      <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl md:w-[700px] lg:w-full">
-        <CardHeader className="flex w-full flex-row  justify-center">
-          <CardTitle className=" text-center text-3xl font-extrabold">
-            Todo List
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex grow flex-col gap-6">
-          <CreateTodo />
-          <div className="flex w-full flex-col justify-between gap-4 md:flex-row">
-            <DropdownMenuDemo onFilterSelect={setFilterType} />
-            {filterType !== null && renderFilterComponent()}
-            {filterType !== null && (
-              <Button className="w-full md:w-44" onClick={resetFilter}>
-                Reset Filter
-              </Button>
-            )}
-            <DeleteALLTodo />
-          </div>
-          <AllTodos columns={columns} data={data} key={Number(dataKey)} />
-        </CardContent>
-      </Card>
-    </div>
+    <>
+      <div className="">
+        <Navbar />
+      </div>
+      <div className="mt-20 flex sm:flex-col md:items-center  lg:mx-20 ">
+        <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl dark:bg-[#030816] md:w-[700px] lg:w-full">
+          <CardHeader className="flex w-full flex-row  justify-center">
+            <CardTitle className=" text-center text-3xl font-extrabold dark:text-white">
+              Todo List
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex grow flex-col gap-6">
+            <CreateTodo />
+            <div className="flex w-full flex-col justify-between gap-4 md:flex-row">
+              <DropdownMenuDemo onFilterSelect={setFilterType} />
+              {filterType !== null && renderFilterComponent()}
+              {filterType !== null && (
+                <Button className="w-full md:w-44" onClick={resetFilter}>
+                  Reset Filter
+                </Button>
+              )}
+              <DeleteALLTodo />
+            </div>
+            <AllTodos columns={columns} data={data} key={Number(dataKey)} />
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 
