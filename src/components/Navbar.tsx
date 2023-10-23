@@ -40,7 +40,7 @@ const Navbar = () => {
           </div>
           <div className="hidden items-center gap-x-5 lg:flex lg:flex-1 lg:justify-end">
             {isSignedIn ? (
-              <UserButton userProfileUrl="/profile" />
+              <UserButton afterSignOutUrl="/" userProfileUrl="/profile" />
             ) : (
               <>
                 <Button

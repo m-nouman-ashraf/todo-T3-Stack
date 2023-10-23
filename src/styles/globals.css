@@ -65,7 +65,26 @@
     --ring: 212.7 26.8% 83.9%;
   }
 }
+.cl-internal-b3fm6y {
+  display: none;
+}
+.cl-userButtonPopoverFooter,
+.cl-internal-hegiim,
+.cl-internal-uyu30o {
+  display: none;
+}
 
+.cl-formButtonPrimary,
+.cl-internal-1kii5f8 {
+  background-color: black;
+  text-transform: none;
+  font-size: small;
+}
+.cl-formButtonPrimary:hover {
+  background-color: white;
+  color: black;
+  border: solid;
+}
 @layer base {
   * {
     @apply border-border;
