@@ -1,6 +1,4 @@
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.
@@ -8,7 +6,7 @@ import type { NextRequest } from "next/server";
 export default authMiddleware({
   publicRoutes: ["/", "/login", "/signup"],
 
-  afterAuth(auth, req, evt) {
+  afterAuth(auth, req) {
     if (!auth.userId && !auth.isPublicRoute) {
       const redirectPage = new URL("/login", req.url);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return

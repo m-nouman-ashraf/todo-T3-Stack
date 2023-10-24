@@ -5,29 +5,28 @@ import { api } from "~/utils/api";
 import { LoadingPage } from "~/components/Loader";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { DropdownMenuDemo } from "~/components/filters/FilterTodo";
-import { FilterType } from "~/components/filters/FilterTodo";
+import type { FilterType } from "~/components/filters/FilterTodo";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { DatePickerWithRange } from "~/components/DatePicker";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { debounce } from "lodash";
 import { Badge } from "~/components/ui/badge";
 import { DeleteTodo } from "~/components/deleteTodo/DeleteTodo";
 import { EditTodo } from "~/components/editTodo/EditTdo";
-import { Toggle } from "~/components/ui/toggle";
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import toast from "react-hot-toast";
 import { DeleteALLTodo } from "~/components/deleteTodo/DeleteAllTodo";
 import { Loader2 } from "lucide-react";
 import Navbar from "~/components/Navbar";
 import { CheckCircle2 } from "lucide-react";
 import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
+  // GetServerSideProps,
+  // InferGetServerSidePropsType,
   NextPage,
 } from "next";
-import { generateSSRHelper } from "~/server/helper/ssrHelper";
-import { ParsedUrlQuery } from "querystring";
+// import { generateSSRHelper } from "~/server/helper/ssrHelper";
+// import { ParsedUrlQuery } from "querystring";
 export type Todo = {
   id: number;
   title: string;
@@ -42,12 +41,12 @@ export type Todo = {
 interface DashboardProps {
   data: Todo[];
 }
-interface TodoFilterParams extends ParsedUrlQuery {
-  status?: string;
-  startDate?: string;
-  endDate?: string;
-  name?: string;
-}
+// interface TodoFilterParams extends ParsedUrlQuery {
+//   status?: string;
+//   startDate?: string;
+//   endDate?: string;
+//   name?: string;
+// }
 const Dashboard: NextPage<DashboardProps> = () =>
   // props: InferGetServerSidePropsType<typeof getServerSideProps>,
   {

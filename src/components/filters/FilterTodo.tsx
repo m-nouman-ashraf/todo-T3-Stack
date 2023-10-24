@@ -6,7 +6,6 @@ import {
   ListTodo,
   XCircle,
 } from "lucide-react";
-import { useState } from "react";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -33,12 +32,6 @@ interface DropdownMenuDemoProps {
   onFilterSelect: (filterType: FilterType) => void;
 }
 export function DropdownMenuDemo({ onFilterSelect }: DropdownMenuDemoProps) {
-  const [filterType, setFilterType] = useState<FilterType>(null);
-
-  const handleFilterSelect = (selectedFilter: FilterType) => {
-    setFilterType(selectedFilter);
-    onFilterSelect(selectedFilter);
-  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,15 +42,11 @@ export function DropdownMenuDemo({ onFilterSelect }: DropdownMenuDemoProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            onClick={() => handleFilterSelect("Search By Name")}
-          >
+          <DropdownMenuItem onClick={() => onFilterSelect("Search By Name")}>
             <Search className="mr-2 h-4 w-4" />
             <span>Search By Name</span>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => handleFilterSelect("Search By Date")}
-          >
+          <DropdownMenuItem onClick={() => onFilterSelect("Search By Date")}>
             <Calendar className="mr-2 h-4 w-4" />
             <span>Search By Date</span>
           </DropdownMenuItem>
@@ -71,17 +60,15 @@ export function DropdownMenuDemo({ onFilterSelect }: DropdownMenuDemoProps) {
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem onClick={() => handleFilterSelect("All")}>
+                <DropdownMenuItem onClick={() => onFilterSelect("All")}>
                   <ListTodo className="mr-2 h-4 w-4" />
                   <span>All</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => handleFilterSelect("Completed")}
-                >
+                <DropdownMenuItem onClick={() => onFilterSelect("Completed")}>
                   <CheckCircle2 className="mr-2 h-4 w-4" />
                   <span>Completed</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleFilterSelect("Pending")}>
+                <DropdownMenuItem onClick={() => onFilterSelect("Pending")}>
                   <XCircle className="mr-2 h-4 w-4" />
                   <span>Pending</span>
                 </DropdownMenuItem>

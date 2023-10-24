@@ -8,12 +8,12 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
 } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 
 interface DataTableProps<TData, TValue> {
