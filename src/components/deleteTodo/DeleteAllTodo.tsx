@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   AlertDialog,
@@ -19,10 +19,11 @@ export function DeleteALLTodo() {
   const { mutate, isLoading } = api.todo.deleteAllTodos.useMutation({
     onSuccess: () => {
       toast.success("All todos deleted successfully.");
-      void ctx.invalidate();
+      void ctx.todo.invalidate();
     },
     onError: () => {
       toast.error("Something went wrong while deleting todos.");
+      void ctx.todo.invalidate();
     },
   });
   const handleDeleteAllTodos = () => {
@@ -31,7 +32,8 @@ export function DeleteALLTodo() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"default"} disabled={isLoading}>
+        <Button variant={"default"} className="flex gap-1" disabled={isLoading}>
+          <Trash2 className="h-4 w-4" aria-hidden="true" />
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

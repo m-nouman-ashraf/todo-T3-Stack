@@ -40,7 +40,7 @@ const Navbar = () => {
           </div>
           <div className="hidden items-center gap-x-5 lg:flex lg:flex-1 lg:justify-end">
             {isSignedIn ? (
-              <UserButton afterSignOutUrl="/" userProfileUrl="/profile" />
+              <UserButton afterSignOutUrl="/" />
             ) : (
               <>
                 <Button
@@ -62,14 +62,14 @@ const Navbar = () => {
         </nav>
         <Dialog
           as="div"
-          className="lg:hidden"
+          className=" lg:hidden"
           open={mobileMenuOpen}
           onClose={setMobileMenuOpen}
         >
           <div className="fixed inset-0 z-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6  py-6 dark:bg-[#030816] sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              ToDo
+              {isSignedIn ? <UserButton userProfileUrl="/profile" /> : ""}
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -94,9 +94,7 @@ const Navbar = () => {
                 </div>
 
                 <div className="flex flex-col gap-8 py-6">
-                  {isSignedIn ? (
-                    <UserButton userProfileUrl="/profile" />
-                  ) : (
+                  {!!isSignedIn ?? (
                     <>
                       <Button
                         asChild

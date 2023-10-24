@@ -21,12 +21,13 @@ import {
 } from "~/components/ui/form";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2, FileEdit } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
 import { cn } from "~/lib/utils";
+import { Textarea } from "../ui/textarea";
 
 interface Props {
   id: number;
@@ -66,12 +67,13 @@ export function EditTodo({ id, status }: Props) {
   const { mutate, isLoading } = api.todo.editTodoById.useMutation({
     onSuccess: () => {
       toast.success("Task Edit Sucessfully");
-      void ctx.invalidate();
+      void ctx.todo.invalidate();
       form.reset();
       setEnabled(false);
     },
     onError: () => {
       toast.error("Something went wrong");
+      void ctx.todo.invalidate();
       form.reset();
     },
   });
@@ -87,11 +89,20 @@ export function EditTodo({ id, status }: Props) {
         }}
         asChild
       >
-        <Button className="w-24" disabled={status} variant="default">
-          Edit Todo
+        <Button
+          className="flex w-32 gap-x-1"
+          disabled={status}
+          variant="default"
+        >
+          <FileEdit className="h-4 w-4" />
+          {isLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Edit Todo"
+          )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className=" sm:max-h-[500px]  sm:max-w-[525px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
         </DialogHeader>
@@ -99,7 +110,7 @@ export function EditTodo({ id, status }: Props) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex w-full flex-col justify-between gap-2"
+            className="flex w-full flex-col justify-between gap-5"
           >
             <FormField
               control={form.control}
@@ -112,18 +123,6 @@ export function EditTodo({ id, status }: Props) {
                       placeholder="Title"
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,6 +161,23 @@ export function EditTodo({ id, status }: Props) {
                       />
                     </PopoverContent>
                   </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Textarea
+                      rows={3}
+                      placeholder="Tell us a little bit about yourself"
+                      className="resize-none md:w-full"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

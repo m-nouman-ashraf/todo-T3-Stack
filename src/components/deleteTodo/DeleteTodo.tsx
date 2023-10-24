@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   AlertDialog,
@@ -25,10 +25,11 @@ export function DeleteTodo({ id }: props) {
       {
         onSuccess: () => {
           toast.success("Task Deleted Sucessfully");
-          void ctx.invalidate();
+          void ctx.todo.invalidate();
         },
         onError: () => {
           toast.error("Something went wrong");
+          void ctx.todo.invalidate();
         },
       },
     );
@@ -36,7 +37,12 @@ export function DeleteTodo({ id }: props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button disabled={deleteTaskMutation.isLoading} variant="outline">
+        <Button
+          disabled={deleteTaskMutation.isLoading}
+          className="flex gap-1"
+          variant="outline"
+        >
+          <Trash2 className="h-4 w-4" aria-hidden="true" />
           {deleteTaskMutation.isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

@@ -23,10 +23,16 @@ import toast from "react-hot-toast";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { Calendar } from "../ui/calendar";
+import { Textarea } from "~/components/ui/textarea";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
-  description: z.string().optional(),
+  description: z
+    .string()
+    .max(100, {
+      message: "Description must not be longer than 20 characters.",
+    })
+    .optional(),
   dueDate: z.date(),
 });
 const CreateTodo = () => {
@@ -41,11 +47,12 @@ const CreateTodo = () => {
   const { mutate, isLoading } = api.todo.create.useMutation({
     onSuccess: () => {
       toast.success("Task Added");
-      void ctx.invalidate();
+      void ctx.todo.invalidate();
       form.reset();
     },
     onError: () => {
       toast.error("Something went wrong");
+      form.reset();
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -55,7 +62,7 @@ const CreateTodo = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full flex-col justify-between gap-2 md:flex-row md:items-end"
+        className="flex w-full flex-col justify-between gap-2 md:flex-row"
       >
         <FormField
           control={form.control}
@@ -66,22 +73,6 @@ const CreateTodo = () => {
                 <Input
                   className="flex w-full lg:w-80"
                   placeholder="Title"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  className="flex w-full lg:w-80"
-                  placeholder="description"
                   {...field}
                 />
               </FormControl>
@@ -122,6 +113,23 @@ const CreateTodo = () => {
                   />
                 </PopoverContent>
               </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  rows={3}
+                  placeholder="Tell us a little bit about yourself"
+                  className="resize-none md:w-80"
+                  {...field}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
