@@ -43,7 +43,6 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // console.log("session", session);
   const userId = session.userId;
   return {
-    session,
     db,
     userId,
   };
