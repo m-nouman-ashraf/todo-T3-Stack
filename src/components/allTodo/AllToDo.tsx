@@ -42,14 +42,11 @@ export default function DataTable<TData, TValue>({
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
-                      className={
-                        "cursor-pointer border-b-[1px] border-gray-200 py-3 pr-4 text-start first:pl-4"
-                      }
                       colSpan={header.colSpan}
                       key={header.id}
                       onClick={header.column.getToggleSortingHandler()}
                     >
-                      <div className="flex  justify-evenly text-left font-bold text-gray-600 dark:text-white">
+                      <div className="flex justify-evenly text-left font-bold text-gray-600 dark:text-white">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
@@ -73,10 +70,12 @@ export default function DataTable<TData, TValue>({
                       className="min-w-[180px] border-white/0 py-3 pr-4 text-left first:pl-4"
                       key={cell.id}
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                      <div className="flex justify-evenly text-left font-bold text-gray-600 dark:text-white">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </div>
                     </TableCell>
                   ))}
                 </TableRow>
@@ -94,28 +93,28 @@ export default function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="mx-2 mt-4 flex justify-between gap-2">
-        <div className="flex items-center text-sm md:text-base">
+      <div className="mx-2 mt-4 flex flex-wrap justify-between gap-2 md:flex-nowrap md:items-center">
+        <div className="flex items-center text-sm md:w-full md:text-base">
           Total Records: {data.length ?? 0}
         </div>
 
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1 md:w-full">
           <div className="flex items-center text-sm md:text-base">
             Current Page: {table.getState().pagination.pageIndex + 1} | Total
             Pages: {table.getPageCount()}
           </div>
         </span>
 
-        <div className="flex gap-3">
+        <div className="flex w-full  items-center justify-center gap-3 md:w-full md:items-start md:justify-end">
           <Button
-            className="rounded-md px-4 py-2 text-sm font-medium text-white focus:bg-gray-200 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-700 dark:text-black md:text-lg"
+            className="w-full rounded-md px-4 py-2 text-sm font-medium text-white focus:bg-gray-200 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-700 dark:text-black md:w-auto md:text-lg"
             disabled={!table.getCanPreviousPage()}
             onClick={() => table.previousPage()}
           >
             Previous
           </Button>
           <Button
-            className="rounded-md px-4 py-2 text-sm font-medium text-white focus:bg-gray-600 focus:outline-none active:bg-black disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-700 dark:text-black md:text-lg"
+            className="w-full rounded-md px-4 py-2 text-sm font-medium text-white focus:bg-gray-600 focus:outline-none active:bg-black disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-700 dark:text-black md:w-auto md:text-lg"
             disabled={!table.getCanNextPage()}
             onClick={() => table.nextPage()}
           >

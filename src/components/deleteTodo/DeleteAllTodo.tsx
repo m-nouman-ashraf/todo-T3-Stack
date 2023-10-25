@@ -32,8 +32,11 @@ export function DeleteALLTodo() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"default"} className="flex gap-1" disabled={isLoading}>
-          <Trash2 className="h-4 w-4" aria-hidden="true" />
+        <Button
+          variant={"default"}
+          className="md:w-24 lg:w-60"
+          disabled={isLoading}
+        >
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

@@ -38,11 +38,12 @@ export function DeleteTodo({ id }: props) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
+          title="Delete Todo"
           disabled={deleteTaskMutation.isLoading}
-          className="flex gap-1"
+          className="md:px-6"
           variant="outline"
         >
-          <Trash2 className="h-4 w-4" aria-hidden="true" />
+          {/* <Trash2 className="h-4 w-4" aria-hidden="true" /> */}
           {deleteTaskMutation.isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

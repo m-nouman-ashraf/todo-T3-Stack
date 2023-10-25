@@ -55,12 +55,21 @@ const Dashboard: NextPage<DashboardProps> = () =>
     const [searchTitle, setSearchTitle] = useState<string | null>("");
     const [filterType, setFilterType] = useState<FilterType>(null);
     const ctx = api.useContext();
-    const { data, isLoading } = api.todo.getAllTodos.useQuery({
-      endDate: dateRange?.from,
-      startDate: dateRange?.to,
-      title: searchTitle ?? "",
-      filterType: filterType ?? "All",
-    });
+    const { data, isLoading } = api.todo.getAllTodos.useQuery(
+      {
+        endDate: dateRange?.from,
+        startDate: dateRange?.to,
+        title: searchTitle ?? "",
+        filterType: filterType ?? "All",
+      },
+      {
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
+        refetchOnReconnect: false,
+        cacheTime: 0,
+        staleTime: 0,
+      },
+    );
     const { mutate, isLoading: statusLoading } =
       api.todo.updateTodoStatus.useMutation({
         onSuccess: () => {
@@ -126,10 +135,11 @@ const Dashboard: NextPage<DashboardProps> = () =>
             <div className="flex w-full items-end justify-end gap-4">
               {status ? null : (
                 <Button
+                  title="Completed"
                   key={row.original.id}
                   variant={"outline"}
                   disabled={statusLoading}
-                  className="flex items-center gap-2"
+                  className="px-3"
                   onClick={() => changeStatus(row.original.id)}
                 >
                   {statusLoading ? (
@@ -139,7 +149,7 @@ const Dashboard: NextPage<DashboardProps> = () =>
                     />
                   ) : (
                     <>
-                      <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                      {/* <CheckCircle2 className="h-4 w-4" aria-hidden="true" /> */}
                       Completed
                     </>
                   )}
@@ -158,7 +168,7 @@ const Dashboard: NextPage<DashboardProps> = () =>
         case "Search By Name":
           return (
             <Input
-              className="w-full md:w-44"
+              className="w-auto"
               type="text"
               placeholder="Enter name..."
               onChange={(e) => handleSearchText(e.target.value)}
@@ -188,23 +198,25 @@ const Dashboard: NextPage<DashboardProps> = () =>
           <Navbar />
         </div>
         <div className="mt-20 flex sm:flex-col md:items-center  lg:mx-20 ">
-          <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl dark:bg-[#030816] md:w-[700px] lg:w-full">
+          <Card className="flex w-[400px] grow flex-col bg-white box-decoration-clone shadow-2xl sm:container dark:bg-[#030816] md:w-[900px] lg:w-full">
             <CardHeader className="flex w-full flex-row  justify-center">
               <CardTitle className=" text-center text-3xl font-extrabold dark:text-white">
                 Todo List
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex grow flex-col gap-6">
-              <CreateTodo />
-              <div className="mt-5 flex w-full flex-col justify-between gap-4 md:flex-row">
+            <CardContent className="flex flex-col gap-6 md:grow">
+              <div className="mt-5 flex w-full flex-wrap justify-between gap-4 md:flex-row">
                 <DropdownMenuDemo onFilterSelect={setFilterType} />
                 {filterType !== null && renderFilterComponent()}
                 {filterType !== null && (
-                  <Button className="w-full md:w-44" onClick={resetFilter}>
+                  <Button className="w-28 md:w-44" onClick={resetFilter}>
                     Reset Filter
                   </Button>
                 )}
-                <DeleteALLTodo />
+                <div className="flex gap-3">
+                  <CreateTodo />
+                  <DeleteALLTodo />
+                </div>
               </div>
               <AllTodos columns={columns} data={data ?? []} />
             </CardContent>

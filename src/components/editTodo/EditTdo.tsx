@@ -90,11 +90,12 @@ export function EditTodo({ id, status }: Props) {
         asChild
       >
         <Button
-          className="flex w-32 gap-x-1"
+          title="Edit Todo"
+          className="md:w-24"
           disabled={status}
           variant="default"
         >
-          <FileEdit className="h-4 w-4" />
+          {/* <FileEdit className="h-4 w-4" /> */}
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
@@ -104,7 +105,7 @@ export function EditTodo({ id, status }: Props) {
       </DialogTrigger>
       <DialogContent className=" sm:max-h-[500px]  sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Edit Todo</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>

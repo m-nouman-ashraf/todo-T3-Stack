@@ -13,11 +13,15 @@ const Navbar = () => {
     <>
       <header className="fixed inset-x-0 top-0 z-50">
         <nav
-          className="flex items-center justify-between p-6 lg:px-8"
+          className="flex-no-wrap fixed top-0 flex w-full items-center justify-between bg-[#FBFBFB] px-4 py-2 shadow-md shadow-black/5 dark:bg-[#030816] dark:shadow-slate-800 lg:flex-wrap lg:justify-start lg:px-8"
+          // className="flex  items-center justify-between p-6 lg:px-8"
           aria-label="Global"
         >
-          <div className="flex text-4xl lg:flex-1">ToDo</div>
-          <div className="flex lg:hidden">
+          <Link href={"/"} className="flex text-4xl lg:flex-1">
+            ToDo
+          </Link>
+          {/* <div onClick={} className="flex text-4xl lg:flex-1"></div> */}
+          <div className="flex sm:hidden">
             <button
               type="button"
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -38,7 +42,7 @@ const Navbar = () => {
               </a>
             ))} */}
           </div>
-          <div className="hidden items-center gap-x-5 lg:flex lg:flex-1 lg:justify-end">
+          <div className="hidden items-center gap-x-5 sm:flex sm:flex-1 sm:justify-end">
             {isSignedIn ? (
               <UserButton afterSignOutUrl="/" />
             ) : (
@@ -62,7 +66,7 @@ const Navbar = () => {
         </nav>
         <Dialog
           as="div"
-          className=" lg:hidden"
+          className="sm:hidden"
           open={mobileMenuOpen}
           onClose={setMobileMenuOpen}
         >

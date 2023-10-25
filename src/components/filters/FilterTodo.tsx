@@ -35,7 +35,7 @@ export function DropdownMenuDemo({ onFilterSelect }: DropdownMenuDemoProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="flex w-full gap-2 md:w-44" variant="outline">
+        <Button className="flex w-28 gap-2 md:w-44" variant="outline">
           <Filter className="h-4 w-4" />
           Filter
         </Button>
