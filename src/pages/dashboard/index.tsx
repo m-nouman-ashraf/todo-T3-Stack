@@ -21,10 +21,13 @@ import { Loader2 } from "lucide-react";
 import Navbar from "~/components/Navbar";
 import { CheckCircle2 } from "lucide-react";
 import type {
+  GetServerSideProps,
   // GetServerSideProps,
-  // InferGetServerSidePropsType,
+  InferGetServerSidePropsType,
   NextPage,
 } from "next";
+import { generateSSRHelper } from "~/server/helper/ssrHelper";
+// export const dynamic = "force-dynamic";
 // import { generateSSRHelper } from "~/server/helper/ssrHelper";
 // import { ParsedUrlQuery } from "querystring";
 export type Todo = {
@@ -55,21 +58,12 @@ const Dashboard: NextPage<DashboardProps> = () =>
     const [searchTitle, setSearchTitle] = useState<string | null>("");
     const [filterType, setFilterType] = useState<FilterType>(null);
     const ctx = api.useContext();
-    const { data, isLoading } = api.todo.getAllTodos.useQuery(
-      {
-        endDate: dateRange?.from,
-        startDate: dateRange?.to,
-        title: searchTitle ?? "",
-        filterType: filterType ?? "All",
-      },
-      {
-        refetchOnWindowFocus: true,
-        refetchOnMount: true,
-        refetchOnReconnect: false,
-        cacheTime: 0,
-        staleTime: 0,
-      },
-    );
+    const { data, isLoading } = api.todo.getAllTodos.useQuery({
+      endDate: dateRange?.from,
+      startDate: dateRange?.to,
+      title: searchTitle ?? "",
+      filterType: filterType ?? "All",
+    });
     const { mutate, isLoading: statusLoading } =
       api.todo.updateTodoStatus.useMutation({
         onSuccess: () => {
@@ -109,7 +103,7 @@ const Dashboard: NextPage<DashboardProps> = () =>
         header: "Due Date",
         cell: ({ row }) => {
           const date = row.original.dueDate;
-          return date ? date.toLocaleDateString() : null;
+          return date ? date.toDateString() : null;
         },
       },
 
@@ -226,15 +220,20 @@ const Dashboard: NextPage<DashboardProps> = () =>
     );
   };
 
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const ssg = generateSSRHelper();
-//   await ssg.todo.getAllTodos.prefetch({});
+export const getServerSideProps: GetServerSideProps = async () => {
+  const ssg = generateSSRHelper();
+  await ssg.todo.getAllTodos.prefetch({
+    endDate: undefined,
+    startDate: undefined,
+    title: "",
+    filterType: "All",
+  });
 
-//   return {
-//     props: {
-//       trpcState: ssg.dehydrate(),
-//     },
-//   };
-// };
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+    },
+  };
+};
 
 export default Dashboard;

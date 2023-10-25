@@ -21,6 +21,17 @@ const getBaseUrl = () => {
 export const api = createTRPCNext<AppRouter>({
   config() {
     return {
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: true,
+            refetchOnMount: true,
+            refetchOnReconnect: false,
+            cacheTime: 0,
+            staleTime: 0,
+          },
+        },
+      },
       /**
        * Transformer used for data de-serialization from the server.
        *

@@ -39,9 +39,11 @@ import { db } from "~/server/db";
  */
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req } = opts;
-  const sesh = getAuth(req);
-  const userId = sesh.userId;
+  const session = getAuth(req);
+  // console.log("session", session);
+  const userId = session.userId;
   return {
+    session,
     db,
     userId,
   };
@@ -92,15 +94,18 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-const enforcedUserIsAuthed = t.middleware(async ({ ctx, next }) => {
-  if (!ctx.userId) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-  return next({
-    ctx: {
-      userId: ctx.userId,
-    },
-  });
-});
+// const enforcedUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+//   // console.log("CTX", ctx.userId);
+//   if (!ctx.session.session) {
+//     throw new TRPCError({ code: "UNAUTHORIZED" });
+//   }
+//   return next({
+//     ctx: {
+//       session: ctx.session,
+//       // userId: ctx.userId,
+//     },
+//   });
+// });
 
-export const privateProcedure = t.procedure.use(enforcedUserIsAuthed);
+export const privateProcedure = t.procedure;
+// .use(enforcedUserIsAuthed);
