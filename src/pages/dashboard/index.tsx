@@ -112,36 +112,6 @@ const Dashboard: NextPage<DashboardProps> = () =>
         },
       });
 
-    // const filteredTodos = useMemo(() => {
-    //   if (!data) {
-    //     return [];
-    //   }
-
-    //   let filteredData = [...data];
-
-    //   if (filterType === "Search By Name" && searchTitle) {
-    //     filteredData = filteredData.filter((todo) =>
-    //       todo.title.toLowerCase().includes(searchTitle.toLowerCase()),
-    //     );
-    //   }
-
-    //   if (filterType === "Search By Date" && dateRange) {
-    //     filteredData = filteredData.filter(
-    //       (todo) =>
-    //         todo?.dueDate >= dateRange?.from && todo?.dueDate <= dateRange?.to,
-    //     );
-    //   }
-
-    //   if (filterType === "Completed") {
-    //     filteredData = filteredData.filter((todo) => todo.status);
-    //   }
-
-    //   if (filterType === "Pending") {
-    //     filteredData = filteredData.filter((todo) => !todo.status);
-    //   }
-
-    //   return filteredData;
-    // }, [data, filterType, searchTitle, dateRange]);
     const changeStatus = (values: number) => {
       setLoadingStates((prevLoadingStates) => ({
         ...prevLoadingStates,

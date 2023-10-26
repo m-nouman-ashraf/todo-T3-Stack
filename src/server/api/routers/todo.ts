@@ -107,6 +107,9 @@ export const toDoRouter = createTRPCRouter({
 
       const todos = await ctx.db.todo.findMany({
         where: where,
+        orderBy: {
+          id: "desc",
+        },
       });
 
       return todos;

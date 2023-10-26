@@ -72,7 +72,7 @@ const CreateTodo = () => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="default" className="lg:w-60">
+          <Button variant="default" disabled={isLoading} className="lg:w-60">
             {isLoading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
