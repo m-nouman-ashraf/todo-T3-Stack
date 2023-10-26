@@ -18,7 +18,7 @@ export const toDoRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // const userId = ctx?.userId;
+      const userId = ctx?.userId;
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       return ctx.db.todo.create({
@@ -26,8 +26,8 @@ export const toDoRouter = createTRPCRouter({
           title: input.title,
           description: input.description,
           dueDate: input.dueDate,
-          userId: "1",
-          // userId: userId ?? "",
+          // userId: "1",
+          userId: userId ?? "",
         },
       });
     }),
@@ -85,7 +85,7 @@ export const toDoRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const where: Prisma.TodoWhereInput = {};
+      const where: Prisma.TodoWhereInput = { userId: ctx.userId ?? "" };
 
       if (input.startDate && input.endDate) {
         where.dueDate = {

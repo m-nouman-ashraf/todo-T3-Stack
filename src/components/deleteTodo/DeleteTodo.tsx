@@ -1,4 +1,4 @@
-import { Loader2, Trash2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   AlertDialog,
@@ -40,10 +40,9 @@ export function DeleteTodo({ id }: props) {
         <Button
           title="Delete Todo"
           disabled={deleteTaskMutation.isLoading}
-          className="md:px-6"
+          className="w-24"
           variant="outline"
         >
-          {/* <Trash2 className="h-4 w-4" aria-hidden="true" /> */}
           {deleteTaskMutation.isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

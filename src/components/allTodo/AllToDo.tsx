@@ -46,7 +46,7 @@ export default function DataTable<TData, TValue>({
                       key={header.id}
                       onClick={header.column.getToggleSortingHandler()}
                     >
-                      <div className="flex justify-evenly text-left font-bold text-gray-600 dark:text-white">
+                      <div className="flex justify-evenly text-left font-semibold text-gray-600 dark:text-white">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
@@ -70,7 +70,7 @@ export default function DataTable<TData, TValue>({
                       className="min-w-[180px] border-white/0 py-3 pr-4 text-left first:pl-4"
                       key={cell.id}
                     >
-                      <div className="flex justify-evenly text-left font-bold text-gray-600 dark:text-white">
+                      <div className="flex justify-evenly text-left text-gray-600 dark:text-white">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
@@ -101,7 +101,7 @@ export default function DataTable<TData, TValue>({
         <span className="flex items-center gap-1 md:w-full">
           <div className="flex items-center text-sm md:text-base">
             Current Page: {table.getState().pagination.pageIndex + 1} | Total
-            Pages: {table.getPageCount()}
+            Pages: {data.length == 0 ? 1 : table.getPageCount()}
           </div>
         </span>
 

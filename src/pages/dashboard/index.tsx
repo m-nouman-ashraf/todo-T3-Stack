@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 import { LoadingPage } from "~/components/Loader";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { DropdownMenuDemo } from "~/components/filters/FilterTodo";
-import type { FilterType } from "~/components/filters/FilterTodo";
+// import type { FilterType } from "~/components/filters/FilterTodo";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { DatePickerWithRange } from "~/components/DatePicker";
@@ -17,9 +17,17 @@ import { EditTodo } from "~/components/editTodo/EditTdo";
 import type { ColumnDef } from "@tanstack/react-table";
 import toast from "react-hot-toast";
 import { DeleteALLTodo } from "~/components/deleteTodo/DeleteAllTodo";
-import { Loader2 } from "lucide-react";
+import {
+  Loader2,
+  Search,
+  Calendar,
+  Filter,
+  CheckCircle2,
+  ListTodo,
+  XCircle,
+} from "lucide-react";
 import Navbar from "~/components/Navbar";
-import { CheckCircle2 } from "lucide-react";
+// import { CheckCircle2 } from "lucide-react";
 import type {
   GetServerSideProps,
   // GetServerSideProps,
@@ -27,6 +35,26 @@ import type {
   NextPage,
 } from "next";
 import { generateSSRHelper } from "~/server/helper/ssrHelper";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+type FilterType =
+  | "Search By Name"
+  | "Search By Date"
+  | "All"
+  | "Completed"
+  | "Pending"
+  | null;
+
 // export const dynamic = "force-dynamic";
 // import { generateSSRHelper } from "~/server/helper/ssrHelper";
 // import { ParsedUrlQuery } from "querystring";
@@ -57,6 +85,10 @@ const Dashboard: NextPage<DashboardProps> = () =>
     const [dateRange, setDateRange] = useState<DateRange | null>(null);
     const [searchTitle, setSearchTitle] = useState<string | null>("");
     const [filterType, setFilterType] = useState<FilterType>(null);
+    const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
+      {},
+    );
+
     const ctx = api.useContext();
     const { data, isLoading } = api.todo.getAllTodos.useQuery({
       endDate: dateRange?.from,
@@ -80,12 +112,57 @@ const Dashboard: NextPage<DashboardProps> = () =>
         },
       });
 
+    // const filteredTodos = useMemo(() => {
+    //   if (!data) {
+    //     return [];
+    //   }
+
+    //   let filteredData = [...data];
+
+    //   if (filterType === "Search By Name" && searchTitle) {
+    //     filteredData = filteredData.filter((todo) =>
+    //       todo.title.toLowerCase().includes(searchTitle.toLowerCase()),
+    //     );
+    //   }
+
+    //   if (filterType === "Search By Date" && dateRange) {
+    //     filteredData = filteredData.filter(
+    //       (todo) =>
+    //         todo?.dueDate >= dateRange?.from && todo?.dueDate <= dateRange?.to,
+    //     );
+    //   }
+
+    //   if (filterType === "Completed") {
+    //     filteredData = filteredData.filter((todo) => todo.status);
+    //   }
+
+    //   if (filterType === "Pending") {
+    //     filteredData = filteredData.filter((todo) => !todo.status);
+    //   }
+
+    //   return filteredData;
+    // }, [data, filterType, searchTitle, dateRange]);
     const changeStatus = (values: number) => {
+      setLoadingStates((prevLoadingStates) => ({
+        ...prevLoadingStates,
+        [values]: true,
+      }));
       const newValues = { status: true, id: Number(values) };
-      mutate(newValues);
+      mutate(newValues, {
+        onSettled: () => {
+          setLoadingStates((prevLoadingStates) => ({
+            ...prevLoadingStates,
+            [values]: false,
+          }));
+        },
+      });
     };
 
-    if (isLoading) return <LoadingPage />;
+    // if (isLoading) return <LoadingPage />;
+    const onFilterSelect = (filterType: FilterType) => {
+      setFilterType(filterType);
+    };
+
     const handleSearchText = debounce((e: string) => {
       setSearchTitle(e);
     }, 2000);
@@ -132,20 +209,17 @@ const Dashboard: NextPage<DashboardProps> = () =>
                   title="Completed"
                   key={row.original.id}
                   variant={"outline"}
-                  disabled={statusLoading}
-                  className="px-3"
+                  disabled={status}
+                  className="w-24 px-3"
                   onClick={() => changeStatus(row.original.id)}
                 >
-                  {statusLoading ? (
+                  {loadingStates[row.original.id] ? (
                     <Loader2
                       key={row.original.id}
                       className="mr-2 h-4 w-4 animate-spin"
                     />
                   ) : (
-                    <>
-                      {/* <CheckCircle2 className="h-4 w-4" aria-hidden="true" /> */}
-                      Completed
-                    </>
+                    <>Completed</>
                   )}
                 </Button>
               )}
@@ -200,7 +274,65 @@ const Dashboard: NextPage<DashboardProps> = () =>
             </CardHeader>
             <CardContent className="flex flex-col gap-6 md:grow">
               <div className="mt-5 flex w-full flex-wrap justify-between gap-4 md:flex-row">
-                <DropdownMenuDemo onFilterSelect={setFilterType} />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      className="flex w-28 gap-2 md:w-44"
+                      variant="outline"
+                    >
+                      <Filter className="h-4 w-4" />
+                      {filterType ? filterType : "Filter"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem
+                        onClick={() => onFilterSelect("Search By Name")}
+                      >
+                        <Search className="mr-2 h-4 w-4" />
+                        <span>Search By Name</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => onFilterSelect("Search By Date")}
+                      >
+                        <Calendar className="mr-2 h-4 w-4" />
+                        <span>Search By Date</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                          <Filter className="mr-2 h-4 w-4" />
+                          <span>Filter by Todo</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                          <DropdownMenuSubContent>
+                            <DropdownMenuItem
+                              onClick={() => onFilterSelect("All")}
+                            >
+                              <ListTodo className="mr-2 h-4 w-4" />
+                              <span>All</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => onFilterSelect("Completed")}
+                            >
+                              <CheckCircle2 className="mr-2 h-4 w-4" />
+                              <span>Completed</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => onFilterSelect("Pending")}
+                            >
+                              <XCircle className="mr-2 h-4 w-4" />
+                              <span>Pending</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                      </DropdownMenuSub>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                {/* <DropdownMenuDemo onFilterSelect={setFilterType} /> */}
                 {filterType !== null && renderFilterComponent()}
                 {filterType !== null && (
                   <Button className="w-28 md:w-44" onClick={resetFilter}>
