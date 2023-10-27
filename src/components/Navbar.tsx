@@ -6,6 +6,7 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import { Menu, XIcon } from "lucide-react";
 import { Dialog } from "@headlessui/react";
 import DarkMode from "./DarkMode";
+import Image from "next/image";
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isSignedIn } = useUser();
@@ -18,7 +19,13 @@ const Navbar = () => {
           aria-label="Global"
         >
           <Link href={"/"} className="flex text-4xl lg:flex-1">
-            ToDo
+            <Image
+              src={"/assets/default-monochrome-black.svg"}
+              className="rounded-full bg-[#fbfbfb] p-2"
+              alt="logo"
+              width={100}
+              height={180}
+            />
           </Link>
           {/* <div onClick={} className="flex text-4xl lg:flex-1"></div> */}
           <div className="flex sm:hidden">

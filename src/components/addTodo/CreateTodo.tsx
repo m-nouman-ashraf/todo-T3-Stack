@@ -136,6 +136,7 @@ const CreateTodo = () => {
                           selected={field.value}
                           onSelect={field.onChange}
                           initialFocus
+                          fromDate={new Date()}
                         />
                       </PopoverContent>
                     </Popover>

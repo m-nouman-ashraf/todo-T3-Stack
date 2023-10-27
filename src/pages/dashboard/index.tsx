@@ -47,6 +47,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { Checkbox } from "~/components/ui/checkbox";
 type FilterType =
   | "Search By Name"
   | "Search By Date"
@@ -137,6 +138,19 @@ const Dashboard: NextPage<DashboardProps> = () =>
       setSearchTitle(e);
     }, 2000);
     const columns: ColumnDef<Todo>[] = [
+      // {
+      //   accessorKey: "-",
+      //   header: "",
+      //   cell: ({ row }) => {
+      //     return (
+      //       <div className="flex items-center justify-between">
+      //         <span className="right-0 flex items-start">
+      //           <Checkbox id="terms" />
+      //         </span>
+      //       </div>
+      //     );
+      //   },
+      // },
       {
         accessorKey: "title",
         header: "Title",

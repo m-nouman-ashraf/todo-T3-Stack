@@ -158,6 +158,7 @@ export function EditTodo({ id, status }: Props) {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
+                        fromDate={new Date()}
                         initialFocus
                       />
                     </PopoverContent>
